@@ -4,11 +4,17 @@
 #include <stdbool.h>
 
 int tail(char *input, int lines) {
-FILE *fp = fopen(input,"r");
-if(fp == NULL) {
-  fprintf(stderr,"Error while opening file.\n");
-  return 1;
-}
+
+  FILE *fp;
+  if(strcmp(input,"stdin")) { // if not * stdin
+    fp = fopen(input,"r");
+    if(fp == NULL) {
+    return 1;
+    }
+  }
+  else // if * stdin
+  fp = stdin;
+
   int c = 0; // char for reading
   int count = -2; // fseek counter
   int *buffer = (int*)malloc((lines+1)*sizeof(int)); // save positions of line starts to LIFO buffer
@@ -58,6 +64,7 @@ int main(int argc, char *argv[]) {
 	  char *p;
 	  long n = strtol(argv[2], &p, 10);
 	  if(argc == 3 && n >= 0) {// stdin, N lines - tail -n 35 <file
+	    printf("jedu stdin.\n");
       if(tail("stdin",n))
         goto f_error;
 	  }
