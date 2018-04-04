@@ -42,7 +42,6 @@ int tail(char *input, int lines) {
   }
 
 char line[1024] = {'\0'}; // string for print line
-
 for(int i = it-1; i > 0; i--) { // printf lines from file by their positions from buffer[]
   fseek(fp,buffer[i],SEEK_SET);
   if(buffer[i-1]-buffer[i]-1 > 1024 && report) {
@@ -52,14 +51,12 @@ for(int i = it-1; i > 0; i--) { // printf lines from file by their positions fro
   fgets(line,1024,fp);
   printf("%s",line);
 }
-
 free(buffer);
 fclose(fp);
 return 0;
 }
 
 int main(int argc, char *argv[]) {
-
 	if((argc == 3 || argc == 4) && !strcmp(argv[1],"-n")) {
 	  char *p;
 	  long n = strtol(argv[2], &p, 10);
@@ -85,9 +82,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Incorrect argument input.\n");
     return 2;
 	}
-
 	return 0;
-
   f_error: // file error
   fprintf(stderr, "File error.\n");
   return 1;
