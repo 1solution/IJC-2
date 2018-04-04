@@ -1,0 +1,48 @@
+/* t= */ htab_t * htab_init(size);       /*konstruktor: vytvoření a inicializace tabulky, pokud bad alloc tak null*/
+/* t = CVICNAAAAA */ htab_t * htab_move(newsize, htab_t * t2);  /* move konstruktor: vytvoření a inicializace
+                                  tabulky daty z tabulky t2,
+                                  t2 nakonec zůstane prázdná a alokovaná
+                                  (tuto funkci cvičně použijte v programu), pokud bad alloc tak null. JEN CVICNA FUNKCE*/
+
+/* size_t s = */ htab_size(htab_t * t);          // vrátí počet prvků tabulky (.size)
+/* size_t c = */ htab_bucket_count(htab_t * t);   // vrátí počet prvků pole (.arr_size)
+struct htab_listitem * htab_lookup_add(htab_t *t, const char *key);    /* V tabulce  t  vyhledá záznam odpovídající řetězci  key  a
+                                                                          - pokud jej nalezne, vrátí ukazatel na záznam
+                                                                          - pokud nenalezne, automaticky přidá záznam a vrátí ukazatel
+                                                                          Poznámka: Dobře promyslete chování této funkce k parametru key. pokud bad alloc tak null*/
+struct htab_listitem * htab_find(htab_t *t, const char *key);          /* Totéž jako htab_lookup_add, ale bez alokace záznamu:
+                                                                          - pokud nenalezne, vrací NULL */
+void htab_foreach(htab_t * t,func);      /* volá zadanou funkci pro každý prvek
+                                    tabulky, obsah tabulky nemění. (Vhodné např. pro tisk obsahu.)*/
+
+/* bool b =*/  htab_remove(htab_t * t,key);      /*vyhledání a zrušení zadané položky
+                                  vrací b==false pokud neexistuje */
+void htab_clear(htab_t * t);             // zrušení všech položek, tabulka zůstane prázdná
+void htab_free(htab_t * t);              // destruktor: zrušení tabulky (volá htab_clear())
+
+/*
+t,t2    je ukazatel na tabulku (typu htab_t *),
+b       je typu bool,
+ptr     je ukazatel na záznam (položku tabulky),
+func    je funkce s parametry: func(constkey,valueptr)
+*/
+
+struct htab_listitem { // tohle je to konkretni slovo zarazeny v seznamu. Na ten prvni ukazuje pointer ptr.
+/*
+- Záznam [key,data,next] je typu
+          struct htab_listitem
+      a obsahuje položky:
+          key .... ukazatel na dynamicky alokovaný řetězec,
+          data ... počet výskytů a
+          next ... ukazatel na další záznam
+*/
+}
+unsigned int htab_hash_function(const char *str) {
+          unsigned int h=0;     // 32bit
+          const unsigned char *p;
+          for(p=(const unsigned char*)str; *p!='\0'; p++)
+              h = 65599*h + *p;
+          return h;
+}        /* její výsledek modulo arr_size určuje index do tabulky:
+        index = (htab_hash_function("mystring") % arr_size);
+        */
